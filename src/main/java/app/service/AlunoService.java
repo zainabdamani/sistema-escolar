@@ -30,11 +30,14 @@ public class AlunoService {
 	}
 
 	public String update(Aluno aluno, long id) {
+		aluno.setId(id);
+      		this.alunoRepository.save(aluno);
 		return "O aluno " + aluno.getNome() + " foi atualizado com sucesso!";
 	}
 
 
 	public String delete(long id) {
+		this.alunoRepository.deleteById(id);
 		return "O aluno foi deletado com sucesso!";
 	}
 
