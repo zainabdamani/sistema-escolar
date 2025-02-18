@@ -27,5 +27,7 @@ public class Turma {
 	private String semestre;
 	private int ano;
 	private String turno;
+
+	private Curso curso;
 	
 }
