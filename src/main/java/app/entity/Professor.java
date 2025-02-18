@@ -43,6 +43,7 @@ public class Professor {
 	
 	@ManyToMany
 	@JoinTable(name="professor_turma")
+	@NotEmpty(message = "Não é possível ter um professor sem pelo menos uma turma associada")
 	private List<Turma> turmas;
 	
 }
