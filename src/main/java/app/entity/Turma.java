@@ -28,6 +28,8 @@ public class Turma {
 	private int ano;
 	private String turno;
 
+	@ManyToOne
+	@NotNull(message = "O curso é obrigatório!")
 	private Curso curso;
 	
 }
