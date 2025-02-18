@@ -28,6 +28,4 @@ public class Curso {
 	@NotBlank
 	private String name;
 	
-	@ManyToOne
-	private Turma turma;
 }
