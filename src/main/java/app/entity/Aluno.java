@@ -1,12 +1,12 @@
 package app.entity;
-import jakarta.persistence.Id;
 import org.hibernate.validator.constraints.br.CPF;
-import org.springframework.data.annotation.Id;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,13 +23,16 @@ public class Aluno {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ]+(?: [A-Za-zÀ-ÖØ-öø-ÿ]+)+$\r\n", message = "O nome deve conter um sobrenome!")
+	@NotBlank(message = "O campo nome do aluno é obrigatório")
+	@Pattern(regexp = "\\S+\\s+\\S+.*$", message = "O nome deve conter duas palavras")
 	private String nome;
 	
 	@CPF(message = "O CPF deve ser válido!")
 	private String cpf;
 	
 	private String telefone;
+	
+	private boolean cadastroCompleto;
 	
 	@ManyToOne
 	private Turma turma;

@@ -11,30 +11,45 @@ import app.repository.TurmaRepository;
 @Service
 public class TurmaService {
 	@Autowired
-	private TurmaRepository turmaRepository;
-	
+	private TurmaRepository turmaRepository;	
 
-	public String save(Turma turma) {
-		this.turmaRepository.save(turma);
-		return "A turma "+turma.getNome()+" foi salva com sucesso!";
+	public String save(Turma turmaModel) {
+		this.turmaRepository.save(turmaModel);
+		return "Turma salva com sucesso!";
 	}
-
-
+	
 	public Turma findById(long id) {
 		return this.turmaRepository.findById(id).get();
 	}
-
-
+	
 	public List<Turma> findAll(){
 		return this.turmaRepository.findAll();
 	}
-
-	public String update(Turma turma, long id) {
-		return "A turma " + turma.getNome() + " foi atualizada com sucesso!";
+	
+	public String update(Turma turmaModel, long id) {
+		turmaModel.setId(id);
+		this.turmaRepository.save(turmaModel);
+		return "Turma atualizada com sucesso";
 	}
-
-
+	
 	public String delete(long id) {
-		return "A turma foi deletada com sucesso!";
+		this.turmaRepository.deleteById(id);
+		return "Turma removida com sucesso!";
+	}
+	
+	public List<Turma> findByClassPerYear(int ano1, int ano2){
+		return this.turmaRepository.findByAnoBetween(ano1, ano2);
+	}
+	
+	public List<Turma> findBySemestreAndAno(String semestre, int ano){
+		return this.turmaRepository.findBySemestreAndAno(semestre, ano);
+	}
+	
+	public List<Turma> findByNomeAndTurno(String nome, String turno){
+		return this.turmaRepository.findByNomeAndTurno(nome, turno);
+	}
+	
+	public Turma findByNome(String nome){
+		return this.turmaRepository.findByNome(nome);
 	}
 }

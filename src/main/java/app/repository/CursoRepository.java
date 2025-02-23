@@ -6,4 +6,6 @@ import app.entity.Curso;
 
 public interface CursoRepository extends JpaRepository<Curso, Long> {
 
+	public Curso findByNomeIgnoreCase(String nome);
+	
 }

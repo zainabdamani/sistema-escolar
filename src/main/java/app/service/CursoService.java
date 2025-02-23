@@ -14,28 +14,31 @@ public class CursoService {
 	private CursoRepository cursoRepository;
 	
 
-	public String save(Curso curso) {
-		this.cursoRepository.save(curso);
-		return "O curso "+curso.getName()+" foi salvo com sucesso!";
+	public String save(Curso cursoModel) {
+		this.cursoRepository.save(cursoModel);
+		return "Curso salvo com sucesso!";
 	}
-
 
 	public Curso findById(long id) {
 		return this.cursoRepository.findById(id).get();
 	}
 
-
-	public List<Curso> findAll(){
+	public List<Curso> findAll() {
 		return this.cursoRepository.findAll();
 	}
 
-	public String update(Curso curso, long id) {
-		return "O curso " + curso.getName() + " foi atualizado com sucesso!";
+	public String update(Curso cursoModel, long id) {
+		cursoModel.getId();
+		this.cursoRepository.save(cursoModel);
+		return "Curso atualizado com sucesso!";
 	}
 
-
 	public String delete(long id) {
-		//dfkjdsafj
-		return "O curso foi deletado com sucesso!";
+		this.cursoRepository.deleteById(id);
+		return "Curso removido com sucesso";
+	}
+	
+	public Curso findByNomeIgnoreCase(String nome) {
+		return this.cursoRepository.findByNomeIgnoreCase(nome);
 	}
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.entity.Aluno;
@@ -24,77 +25,85 @@ public class AlunoController {
 	@Autowired
 	private AlunoService alunoService;
 	
-	
-	
-	@PostMapping("/save")
-	public ResponseEntity<String> save(@RequestBody Aluno aluno){
-		try {
-			String mensagem = this.alunoService.save(aluno);
-			return new ResponseEntity<>(mensagem, HttpStatus.OK );
-			
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-			
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST );
 
+	@PostMapping("/save")
+	public ResponseEntity<String> save(@RequestBody Aluno alunoModel){
+		try {
+			String message = this.alunoService.save(alunoModel);
+			return new ResponseEntity<>(message, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 	
-	@GetMapping("/findById/{id}")
+	@GetMapping("findById/{id}")
 	public ResponseEntity<Aluno> findById(@PathVariable long id){
 		try {
-			
-			Aluno aluno = this.alunoService.findById(id);
-			return new ResponseEntity<>(aluno, HttpStatus.OK );
-			
+			Aluno alunoModel = alunoService.findById(id);
+			return new ResponseEntity<>(alunoModel, HttpStatus.OK);
 		} catch (Exception e) {
-			
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST );
-
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
 	
-	
-	@GetMapping("/findAll")
+	@GetMapping("findAll")
 	public ResponseEntity<List<Aluno>> findAll(){
-		
 		try {
-			List<Aluno> lista = this.alunoService.findAll();
-			return new ResponseEntity<>(lista, HttpStatus.OK);
-		} catch (Exception e) {
-
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST );
-		}
-		
-	}
-	
-	
-	@PutMapping("/update/{id}")
-	public ResponseEntity<String> update(@RequestBody Aluno aluno, @PathVariable long id){
-		try {
-			
-			String mensagem = this.alunoService.update(aluno, id);
-			return new ResponseEntity<>(mensagem, HttpStatus.OK);
-			
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST );
+			List<Aluno> list = this.alunoService.findAll();
+			return new ResponseEntity<>(list, HttpStatus.OK);
+		} catch (Exception e){
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
 	
+	@GetMapping("findByNomeStarting")
+	public ResponseEntity<List<Aluno>> findByNomeStarting(@RequestParam String nome){
+		try {
+			return new ResponseEntity<>(this.alunoService.findByNomeStartingWith(nome), HttpStatus.OK);
+		} catch (Exception e){
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("findByTelefoneContaining")
+	public ResponseEntity<List<Aluno>> findByTelefoneContaining(@RequestParam String telefone){
+		try {
+			return new ResponseEntity<>(this.alunoService.findByTelefoneContaining(telefone), HttpStatus.OK);
+		} catch (Exception e){
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("findByTurma")
+	public ResponseEntity<List<Aluno>> findByTurma(@RequestParam String nome){
+		try {
+			return new ResponseEntity<>(this.alunoService.findByTurmaNome(nome), HttpStatus.OK);
+		} catch (Exception e){
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
+	
+	@PutMapping("update/{id}")
+	public ResponseEntity<String> update (@RequestBody Aluno alunoModel, @PathVariable long id){
+		try {
+			String message = this.alunoService.update(alunoModel, id);
+			return new ResponseEntity<>(message, HttpStatus.OK);
+		} catch(Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> delete(@PathVariable long id){
 		try {
-			
-			String mensagem = this.alunoService.delete(id);
-			return new ResponseEntity<>(mensagem, HttpStatus.OK );
-			
+			String message = this.alunoService.delete(id);
+			return new ResponseEntity<>(message, HttpStatus.OK);
 		} catch (Exception e) {
-			
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST );
-
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
-	
 }
+	
+

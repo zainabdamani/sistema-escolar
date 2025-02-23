@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.entity.Turma;
@@ -23,76 +24,89 @@ public class TurmaController {
 	@Autowired
 	private TurmaService turmaService;
 	
-	
-	
 	@PostMapping("/save")
-	public ResponseEntity<String> save(@RequestBody Turma turma){
+	public ResponseEntity<String> save(@RequestBody Turma turmaModel){
 		try {
-			String mensagem = this.turmaService.save(turma);
-			return new ResponseEntity<>(mensagem, HttpStatus.OK );
-			
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-			
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST );
-
+			String message = this.turmaService.save(turmaModel);
+			return new ResponseEntity<>(message, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity<>("Deu Ruim!", HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	@GetMapping("/findById/{id}")
 	public ResponseEntity<Turma> findById(@PathVariable long id){
 		try {
-			
-			Turma turma = this.turmaService.findById(id);
-			return new ResponseEntity<>(turma, HttpStatus.OK );
-			
-		} catch (Exception e) {
-			
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST );
-
+			Turma turmaModel = turmaService.findById(id);
+			return new ResponseEntity<>(turmaModel, HttpStatus.OK);
+		} catch(Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
-	
 	
 	@GetMapping("/findAll")
 	public ResponseEntity<List<Turma>> findAll(){
-		
 		try {
-			List<Turma> lista = this.turmaService.findAll();
-			return new ResponseEntity<>(lista, HttpStatus.OK);
-		} catch (Exception e) {
-
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST );
+			List<Turma> list = this.turmaService.findAll();
+			return new ResponseEntity<>(list, HttpStatus.OK);
+		} catch (Exception e){
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-		
 	}
 	
+	@GetMapping("/findByClassYear")
+	public ResponseEntity<List<Turma>> findByClassYear(int ano1, int ano2){
+		try {
+			return new ResponseEntity<>(this.turmaService.findByClassPerYear(ano1, ano2), HttpStatus.OK);
+		} catch (Exception e){
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/findBySemestreAndAno")
+	public ResponseEntity<List<Turma>> findBySemestreAndAno(String semestre, int ano){
+		try {
+			return new ResponseEntity<>(this.turmaService.findBySemestreAndAno(semestre, ano), HttpStatus.OK);
+		} catch (Exception e){
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/findByNomeAndTurno")
+	public ResponseEntity<List<Turma>> findByNomeAndTurno(String nome, String turno){
+		try {
+			return new ResponseEntity<>(this.turmaService.findByNomeAndTurno(nome, turno), HttpStatus.OK);
+		} catch (Exception e){
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/findByNome")
+	public ResponseEntity<Turma> findByNome(@RequestParam String nome){
+		try {
+			return new ResponseEntity<>(turmaService.findByNome(nome), HttpStatus.OK);
+		} catch(Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 	@PutMapping("/update/{id}")
-	public ResponseEntity<String> update(@RequestBody Turma turma, @PathVariable long id){
+	public ResponseEntity<String> update(@RequestBody Turma turmaModel, @PathVariable long id){
 		try {
-			
-			String mensagem = this.turmaService.update(turma, id);
-			return new ResponseEntity<>(mensagem, HttpStatus.OK);
-			
+			String message = this.turmaService.update(turmaModel, id);
+			return new ResponseEntity<>(message, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST );
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 	}
-	
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> delete(@PathVariable long id){
 		try {
-			
-			String mensagem = this.turmaService.delete(id);
-			return new ResponseEntity<>(mensagem, HttpStatus.OK );
-			
+			String message = this.turmaService.delete(id);
+			return new ResponseEntity<>(message, HttpStatus.OK);
 		} catch (Exception e) {
-			
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST );
-
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-}
+	}
 }

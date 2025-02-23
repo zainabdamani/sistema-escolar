@@ -1,6 +1,5 @@
 package app.entity;
 
-import jakarta.persistence.Id;
 import java.util.List;
 
 import org.hibernate.validator.constraints.br.CPF;
@@ -8,9 +7,12 @@ import org.hibernate.validator.constraints.br.CPF;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,7 +44,9 @@ public class Professor {
 	private String especialidade;
 	
 	@ManyToMany
-	@JoinTable(name="professor_turma")
+	@JoinTable(name = "professor_turma", 
+			joinColumns = @JoinColumn(name = "professor_id"), 
+			inverseJoinColumns = @JoinColumn(name = "turma_id"))
 	@NotEmpty(message = "Não é possível ter um professor sem pelo menos uma turma associada")
 	private List<Turma> turmas;
 	
